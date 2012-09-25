@@ -19,11 +19,11 @@ module Paperclip
       begin
         parameters = []
         parameters << @params
-        parameters << ":source"
-        parameters << ":dest"
+        parameters << File.expand_path(src.path)
+        parameters << File.expand_path(dst.path)
         parameters = parameters.flatten.compact.join(" ").strip.squeeze(" ")
-        success = Paperclip.run("lame", parameters, :source => "#{File.expand_path(src.path)}",:dest => File.expand_path(dst.path))
-      rescue PaperclipCommandLineError => e
+        success = Paperclip.run("lame", parameters)
+      rescue Exception => e
         raise PaperclipError, "There was an error converting #{@basename} to mp3"
       end
       dst
